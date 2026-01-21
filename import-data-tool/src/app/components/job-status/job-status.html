@@ -1,0 +1,81 @@
+<div class="card">
+
+  <!-- Loader Overlay -->
+  <div *ngIf="loading" class="loader-overlay">
+    <div class="spinner"></div>
+  </div>
+
+  <div class="header">
+    <h2>Import Job Status</h2>
+    <span class="badge" [ngClass]="job?.status">{{ job?.status || 'N/A' }}</span>
+  </div>
+
+  <p class="subtitle">Track progress of your CSV import job</p>
+
+  <!-- Job ID Input -->
+  <div class="form-group">
+    <label>Job ID</label>
+    <input type="text" placeholder="Enter Job ID" [(ngModel)]="jobId" />
+  </div>
+
+  <button class="primary-btn" (click)="fetchStatus()">Check Status</button>
+
+  <!-- Error -->
+  <div *ngIf="error" class="error">{{ error }}</div>
+
+  <!-- Job Details -->
+  <div *ngIf="job" class="job-details">
+
+    <div class="row">
+      <span>Entity</span>
+      <strong>{{ job.entity }}</strong>
+    </div>
+
+    <div class="row">
+      <span>File Name</span>
+      <strong>{{ job.fileName }}</strong>
+    </div>
+
+    <div class="row">
+      <span>Status</span>
+      <strong>{{ job.status }}</strong>
+    </div>
+
+    <div class="row">
+      <span>Total Records</span>
+      <strong>{{ job.totalRecords }}</strong>
+    </div>
+
+    <div class="row">
+      <span>Processed Records</span>
+      <strong>{{ job.processedRecords }}</strong>
+    </div>
+
+    <div class="row">
+      <span>Created At</span>
+      <strong>{{ job.createdDateTime | date:'medium' }}</strong>
+    </div>
+
+    <div *ngIf="job.completedDateTime" class="row">
+      <span>Completed At</span>
+      <strong>{{ job.completedDateTime | date:'medium' }}</strong>
+    </div>
+
+    <!-- Progress Bar -->
+    <div class="progress">
+      <div class="progress-bar" [style.width.%]="(job.processedRecords / job.totalRecords) * 100"></div>
+    </div>
+
+    <!-- Errors -->
+    <div *ngIf="job.errorMessages?.length" class="error-section">
+      <h4>Error Details</h4>
+      <ul>
+        <li *ngFor="let e of job.errorMessages">
+          Row {{ e.rowNumber }} : {{ e.message }}
+        </li>
+      </ul>
+    </div>
+
+  </div>
+
+</div>

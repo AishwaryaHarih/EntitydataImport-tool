@@ -1,0 +1,43 @@
+<div class="card">
+
+  <!-- Loader Overlay -->
+  <div *ngIf="loading" class="loader-overlay">
+    <div class="spinner"></div>
+  </div>
+
+  <div class="header">
+    <h2>CSV Import</h2>
+    <span class="badge">Upload</span>
+  </div>
+
+  <p class="subtitle">Import data for supported entities using a CSV file</p>
+
+  <div class="form-group">
+    <label>Entity Type</label>
+    <select [(ngModel)]="entityType">
+      <option value="" disabled>Select entity</option>
+      <option value="COUNTRY">Country</option>
+      <option value="USER">User</option>
+      <option value="AIRPORT">Airport</option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label>CSV File</label>
+    <div class="file-box">
+      <input type="file" accept=".csv" (change)="onFileChange($event)">
+      <span>{{ selectedFile?.name || 'Choose CSV file' }}</span>
+    </div>
+    <small>CSV headers must exactly match entity fields</small>
+  </div>
+
+  <button class="primary-btn" (click)="upload()">Upload CSV</button>
+
+  <div *ngIf="error" class="error">{{ error }}</div>
+
+  <div *ngIf="job" class="success-box">
+    <p><strong>Job ID:</strong> {{ job.jobId }}</p>
+    <p><strong>Status:</strong> {{ job.status }}</p>
+    <p><strong>Records:</strong> {{ job.totalRecords }}</p>
+  </div>
+</div>
